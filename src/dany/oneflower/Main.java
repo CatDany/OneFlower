@@ -34,7 +34,7 @@ public class Main
 		
 		JButton bStartHard = new JButton();
 		bStartHard.setText("Hard");
-		bStartCasual.setToolTipText("Timer starts with 10 seconds and decreasing over time!");
+		bStartHard.setToolTipText("Timer starts with 10 seconds and decreasing over time!");
 		bStartHard.setBounds(frameMM.getWidth() / 2 + 1, 70, 89, 40);
 		bStartHard.setActionCommand("bStartHard");
 		bStartHard.addActionListener(ActionListener.instance);
