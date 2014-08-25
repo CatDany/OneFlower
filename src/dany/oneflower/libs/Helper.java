@@ -196,7 +196,7 @@ public class Helper
 	{
 		if (isOutdated())
 		{
-			int browse = JOptionPane.showOptionDialog(new JFrame(), Helper.arrayToString("\n", Refs.OUTDATED), "OneFlower", 0, JOptionPane.INFORMATION_MESSAGE, null, new String[] {"Update", "Close"}, "Update");
+			int browse = JOptionPane.showOptionDialog(new JFrame(), Helper.arrayToString("\n", Refs.OUTDATED), "DonationCalculator", 0, JOptionPane.INFORMATION_MESSAGE, null, new String[] {"Update", "Close"}, "Update");
 			if (browse == 0)
 			{
 				try
@@ -206,6 +206,7 @@ public class Helper
 				catch (Throwable t)
 				{
 					t.printStackTrace();
+					JOptionPane.showInputDialog(new JFrame(), "Something went wrong and we couldn't open downloads page!\nTry it yourself.", Refs.UPDATE_URL);
 				}
 			}
 			System.exit(0);
