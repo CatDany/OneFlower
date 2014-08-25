@@ -95,7 +95,7 @@ public class Main
 	{
 		if (hardModeUnlocked)
 		{
-			bStartCasual.setBorder(null);
+			bStartCasual.setBorder(new LineBorder(Color.GRAY, 1));
 			bStartHard.setEnabled(true);
 			bStartHard.setToolTipText("Timer starts with 10 seconds and decreasing over time!");
 		}
