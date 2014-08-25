@@ -5,7 +5,6 @@ import java.awt.event.ActionEvent;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
-import dany.oneflower.OneFlower.GameMode;
 import dany.oneflower.libs.Helper;
 
 public class ActionListener implements java.awt.event.ActionListener
@@ -15,16 +14,17 @@ public class ActionListener implements java.awt.event.ActionListener
 	@Override
 	public void actionPerformed(ActionEvent e)
 	{
-		if ("bStartCasual".equals(e.getActionCommand()))
+		if ("bStart".equals(e.getActionCommand()))
 		{
 			Main.frameMM.setVisible(false);
-			Main.currentGame = new OneFlower(GameMode.CASUAL);
-			Main.currentGame.start();
-		}
-		else if ("bStartHard".equals(e.getActionCommand()))
-		{
-			Main.frameMM.setVisible(false);
-			Main.currentGame = new OneFlower(GameMode.HARD);
+			String seedStr = null;
+			while (seedStr == null)
+			{
+				seedStr = JOptionPane.showInputDialog(new JFrame(), "Enter a seed for your world", "Seed Selection", JOptionPane.QUESTION_MESSAGE);
+			}
+			int seedInt = seedStr.hashCode();
+			
+			Main.currentGame = new OneFlower();
 			Main.currentGame.start();
 		}
 		else if ("bAbout".equals(e.getActionCommand()))

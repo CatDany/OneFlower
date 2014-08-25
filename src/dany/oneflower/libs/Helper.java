@@ -1,9 +1,7 @@
 package dany.oneflower.libs;
 
-import java.util.Random;
-
 import dany.oneflower.OneFlower;
-import dany.oneflower.OneFlower.GameMode;
+import dany.oneflower.World;
 
 public class Helper
 {
@@ -22,7 +20,7 @@ public class Helper
 	
 	public static boolean isMovePossible(int mX, int mY)
 	{
-		return !(mX < 0 || mX > 11 || mY < 0 || mY > 11);
+		return !(mX < -5000 || mX > 4999 || mY < -5000 || mY > 4999) && !World.getWorld().isFlower(mX, mY);
 	}
 	
 	public static void moveIfPossible(OneFlower o, int mX, int mY)
@@ -31,66 +29,6 @@ public class Helper
 		{
 			o.x = mX;
 			o.y = mY;
-		}
-	}
-	
-	public static void replaceFlower(OneFlower o)
-	{
-		Random random = new Random();
-		int x = random.nextInt(12);
-		int y = random.nextInt(12);
-		if ((x == o.x && y == o.y) || (x == o.fx && y == o.fy))
-		{
-			replaceFlower(o);
-			return;
-		}
-		o.fx = x;
-		o.fy = y;
-		
-		o.msFlower = System.currentTimeMillis();
-	}
-	
-	public static void eatFlowerIfCollided(OneFlower o)
-	{
-		if (o.x == o.fx && o.y == o.fy)
-		{
-			o.score++;
-			replaceFlower(o);
-		}
-	}
-	
-	public static int getMaxTimerFromScore(GameMode mode, int score)
-	{
-		if (mode == GameMode.CASUAL)
-		{
-			return 10000;
-		}
-		else
-		{
-			if (score < 100)
-			{
-				return 10000;
-			}
-			else if (score < 150)
-			{
-				return 7000;
-			}
-			else if (score < 200)
-			{
-				return 5000;
-			}
-			else if (score < 250)
-			{
-				return 4000;
-			}
-			else if (score < 300)
-			{
-				return 3000;
-			}
-			else
-			{
-				return 2000;
-			}
 		}
 	}
 }

@@ -5,6 +5,7 @@ import java.awt.Font;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JProgressBar;
 
 public class Main
 {
@@ -12,11 +13,12 @@ public class Main
 	
 	public static OneFlower currentGame;
 	public static JFrame frameMM;
+	public static JFrame frameLoading;
 	
 	public static void main(String[] args)
 	{
 		frameMM = new JFrame();
-		frameMM.setTitle("OneFlower");
+		frameMM.setTitle("OneFlower [Exploration!]");
 		frameMM.setLocationRelativeTo(null);
 		frameMM.setSize(384, 384);
 		frameMM.setResizable(false);
@@ -24,21 +26,13 @@ public class Main
 		frameMM.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frameMM.setVisible(true);
 		
-		JButton bStartCasual = new JButton();
-		bStartCasual.setText("Casual");
-		bStartCasual.setToolTipText("Timer is always 10 seconds");
-		bStartCasual.setBounds(frameMM.getWidth() / 2 - 90, 70, 89, 40);
-		bStartCasual.setActionCommand("bStartCasual");
-		bStartCasual.addActionListener(ActionListener.instance);
-		frameMM.add(bStartCasual);
-		
-		JButton bStartHard = new JButton();
-		bStartHard.setText("Hard");
-		bStartHard.setToolTipText("Timer starts with 10 seconds and decreasing over time!");
-		bStartHard.setBounds(frameMM.getWidth() / 2 + 1, 70, 89, 40);
-		bStartHard.setActionCommand("bStartHard");
-		bStartHard.addActionListener(ActionListener.instance);
-		frameMM.add(bStartHard);
+		JButton bStart = new JButton();
+		bStart.setText("Start Exploring");
+		bStart.setToolTipText("Start a new world for exploring!");
+		bStart.setBounds(frameMM.getWidth() / 2 - 90, 70, 89, 40);
+		bStart.setActionCommand("bStart");
+		bStart.addActionListener(ActionListener.instance);
+		frameMM.add(bStart);
 		
 		JButton bAbout = new JButton();
 		bAbout.setText("About");

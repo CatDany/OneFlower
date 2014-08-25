@@ -14,37 +14,26 @@ public class OneFlower implements Runnable, KeyListener
 {
 	public final JFrame frame;
 	public final JLabel character;
-	public final JLabel flower;
-	public final JLabel showInfo;
+	public final JLabel[] flower = new JLabel[12 * 12];
 	
-	public final GameMode mode;
 	public int score = 0;
 	public CharRotation rotation = CharRotation.DOWN;
 	public int x = 0;
 	public int y = 0;
 	public int fx = 0;
 	public int fy = 0;
-	public long msFlower = 0;
 	
-	public OneFlower(GameMode mode)
+	public OneFlower()
 	{
-		this.mode = mode;
-		
 		frame = new JFrame();
-		frame.setTitle("OneFlower - Playing - Score: 0");
+		frame.setTitle("OneFlower [Exploration!] - Playing");
 		frame.setLocationRelativeTo(null);
-		frame.setSize(390, 410);
 		frame.setResizable(false);
 		frame.setLayout(null);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setVisible(true);
 		
 		frame.addKeyListener(this);
-		
-		showInfo = new JLabel();
-		showInfo.setFont(Main.font);
-		showInfo.setBounds(0, frame.getHeight() - 50, frame.getWidth(), 25);
-		frame.add(showInfo);
 		
 		character = new JLabel();
 		character.setIcon(ImageInitializer.imageCharacterDown);
@@ -57,9 +46,9 @@ public class OneFlower implements Runnable, KeyListener
 		frame.add(flower);
 		
 		// Overdraw.. Oops. Totally not a bug.
-		for (int i = 0; i < 16; i++)
+		for (int i = 0; i < 12; i++)
 		{
-			for (int j = 0; j < 16; j++)
+			for (int j = 0; j < 12; j++)
 			{
 				JLabel l = new JLabel();
 				l.setBounds(i * 32, j * 32, 32, 32);
@@ -72,9 +61,6 @@ public class OneFlower implements Runnable, KeyListener
 	@Override
 	public void run()
 	{
-		Helper.replaceFlower(this);
-		msFlower = System.currentTimeMillis();
-		
 		while (Main.currentGame == this)
 		{
 			character.setBounds(x * 32, y * 32, 32, 32);
@@ -84,16 +70,6 @@ public class OneFlower implements Runnable, KeyListener
 			
 			int maxTimer = Helper.getMaxTimerFromScore(mode, score);
 			int timer = (int)((msFlower + maxTimer - System.currentTimeMillis()) / 1000);
-			showInfo.setText("Score: " + score + " | Timer: " + timer);
-			frame.setTitle("One Flower - Playing - Score: " + score + " - Game Over In: " + timer);
-			
-			if (msFlower + maxTimer - System.currentTimeMillis() <= 0)
-			{
-				Main.currentGame = null;
-				frame.setVisible(false);
-				Main.frameMM.setVisible(true);
-				JOptionPane.showMessageDialog(new JFrame(), String.format(Helper.arrayToString("\n", Refs.GAME_OVER), score), "Oops", JOptionPane.WARNING_MESSAGE);
-			}
 			
 			frame.repaint();
 		}
@@ -152,11 +128,5 @@ public class OneFlower implements Runnable, KeyListener
 		{
 			this.icon = icon;
 		}
-	}
-	
-	public static enum GameMode
-	{
-		CASUAL,
-		HARD;
 	}
 }
