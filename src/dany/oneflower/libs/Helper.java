@@ -1,17 +1,23 @@
 package dany.oneflower.libs;
 
+import java.awt.Desktop;
 import java.io.File;
 import java.io.FileOutputStream;
+import java.io.InputStream;
 import java.net.InetAddress;
 import java.net.NetworkInterface;
-import java.nio.file.Files;
-import java.util.ArrayList;
-import java.util.Arrays;
+import java.net.URI;
+import java.net.URL;
 import java.util.Random;
+import java.util.Scanner;
+
+import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 
 import dany.oneflower.Main;
 import dany.oneflower.OneFlower;
 import dany.oneflower.OneFlower.GameMode;
+import dany.oneflower.Refs;
 
 public class Helper
 {
@@ -165,6 +171,44 @@ public class Helper
 			t.printStackTrace();
 			System.exit(-1);
 			return null;
+		}
+	}
+	
+	public static boolean isOutdated()
+	{
+		InputStream in;
+		try
+		{
+			in = new URL(Refs.VERSION_CHECKER_URL).openStream();
+		}
+		catch (Throwable t)
+		{
+			t.printStackTrace();
+			return false;
+		}
+		Scanner s = new Scanner(in);
+		boolean updated = Integer.parseInt(s.next()) > Refs.VERSION_BUILD;
+		s.close();
+		return updated;
+	}
+	
+	public static void checkForUpdates()
+	{
+		if (isOutdated())
+		{
+			int browse = JOptionPane.showOptionDialog(new JFrame(), Helper.arrayToString("\n", Refs.OUTDATED), "OneFlower", 0, JOptionPane.INFORMATION_MESSAGE, null, new String[] {"Update", "Close"}, "Update");
+			if (browse == 0)
+			{
+				try
+				{
+					Desktop.getDesktop().browse(new URI(Refs.UPDATE_URL));
+				}
+				catch (Throwable t)
+				{
+					t.printStackTrace();
+				}
+			}
+			System.exit(0);
 		}
 	}
 }
