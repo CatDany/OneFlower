@@ -5,7 +5,7 @@ import dany.oneflower.libs.Helper;
 public class Refs
 {
 	public static final String VERSION_STD = "b1.0";
-	public static final int VERSION_BUILD = 5; // FIXME Version! (and github)
+	public static final int VERSION_BUILD = 6; // FIXME Version! (and github)
 	public static final String VERSION = VERSION_STD + "-" + VERSION_BUILD;
 	
 	public static final String VERSION_CHECKER_URL = "https://raw.githubusercontent.com/CatDany/OneFlower/master/LATEST";
