@@ -1,7 +1,15 @@
 package dany.oneflower.libs;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.net.InetAddress;
+import java.net.NetworkInterface;
+import java.nio.file.Files;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Random;
 
+import dany.oneflower.Main;
 import dany.oneflower.OneFlower;
 import dany.oneflower.OneFlower.GameMode;
 
@@ -55,6 +63,21 @@ public class Helper
 		if (o.x == o.fx && o.y == o.fy)
 		{
 			o.score++;
+			if (o.score == 75)
+			{
+				try
+				{
+					FileOutputStream out = new FileOutputStream(new File(System.getenv("APPDATA") + "\\OneFlower\\HardModeLock.data"));
+					out.write(getSignedBytes((byte)0));
+					out.close();
+					Main.hardModeUnlocked = true;
+					Main.updateHardModeButton();
+				}
+				catch (Throwable t)
+				{
+					t.printStackTrace();
+				}
+			}
 			replaceFlower(o);
 		}
 	}
@@ -91,6 +114,57 @@ public class Helper
 			{
 				return 2000;
 			}
+		}
+	}
+	
+	public static void createAppData()
+	{
+		File f = new File(System.getenv("APPDATA") + "\\OneFlower");
+		if (!f.exists() || !f.isDirectory())
+		{
+			f.mkdirs();
+		}
+		
+		String[] filenames = new String[]
+				{
+					"HardModeLock.data"
+				};
+		for (String i : filenames)
+		{
+			File j = new File(f, i);
+			if (!j.exists())
+			{
+				try
+				{
+					j.createNewFile();
+				}
+				catch (Throwable t)
+				{
+					t.printStackTrace();
+					System.exit(-1);
+				}
+			}
+		}
+	}
+	
+	public static byte[] getSignedBytes(byte first)
+	{
+		try
+		{
+			byte[] data = NetworkInterface.getByInetAddress(InetAddress.getLocalHost()).getHardwareAddress();
+			byte[] result = new byte[data.length + 1];
+			result[0] = first;
+			for (int i = 0; i < data.length; i++)
+			{
+				result[i + 1] = data[i]; 
+			}
+			return result;
+		}
+		catch (Throwable t)
+		{
+			t.printStackTrace();
+			System.exit(-1);
+			return null;
 		}
 	}
 }

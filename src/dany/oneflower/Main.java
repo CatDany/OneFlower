@@ -1,10 +1,17 @@
 package dany.oneflower;
 
+import java.awt.Color;
 import java.awt.Font;
+import java.io.File;
+import java.nio.file.Files;
+import java.util.Arrays;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.border.LineBorder;
+
+import dany.oneflower.libs.Helper;
 
 public class Main
 {
@@ -13,8 +20,25 @@ public class Main
 	public static OneFlower currentGame;
 	public static JFrame frameMM;
 	
+	public static boolean hardModeUnlocked = false;
+	public static JButton bStartCasual;
+	public static JButton bStartHard;
+	
 	public static void main(String[] args)
 	{
+		Helper.createAppData();
+		try
+		{
+			if (Arrays.equals(Files.readAllBytes(new File(System.getenv("APPDATA") + "\\OneFlower\\HardModeLock.data").toPath()), Helper.getSignedBytes((byte)0)))
+			{
+				hardModeUnlocked = true;
+			}
+		}
+		catch (Throwable t)
+		{
+			t.printStackTrace();
+		}
+		
 		frameMM = new JFrame();
 		frameMM.setTitle("OneFlower");
 		frameMM.setLocationRelativeTo(null);
@@ -24,7 +48,7 @@ public class Main
 		frameMM.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frameMM.setVisible(true);
 		
-		JButton bStartCasual = new JButton();
+		bStartCasual = new JButton();
 		bStartCasual.setText("Casual");
 		bStartCasual.setToolTipText("Timer is always 10 seconds");
 		bStartCasual.setBounds(frameMM.getWidth() / 2 - 90, 70, 89, 40);
@@ -32,12 +56,12 @@ public class Main
 		bStartCasual.addActionListener(ActionListener.instance);
 		frameMM.add(bStartCasual);
 		
-		JButton bStartHard = new JButton();
+		bStartHard = new JButton();
 		bStartHard.setText("Hard");
-		bStartHard.setToolTipText("Timer starts with 10 seconds and decreasing over time!");
 		bStartHard.setBounds(frameMM.getWidth() / 2 + 1, 70, 89, 40);
 		bStartHard.setActionCommand("bStartHard");
 		bStartHard.addActionListener(ActionListener.instance);
+		updateHardModeButton();
 		frameMM.add(bStartHard);
 		
 		JButton bAbout = new JButton();
@@ -65,5 +89,21 @@ public class Main
 			}
 		}
 		frameMM.repaint();
+	}
+	
+	public static void updateHardModeButton()
+	{
+		if (hardModeUnlocked)
+		{
+			bStartCasual.setBorder(null);
+			bStartHard.setEnabled(true);
+			bStartHard.setToolTipText("Timer starts with 10 seconds and decreasing over time!");
+		}
+		else
+		{
+			bStartCasual.setBorder(new LineBorder(new Color(0x3366ff), 4));
+			bStartHard.setEnabled(false);
+			bStartHard.setToolTipText("Get 75 points of score in Casual Mode to unlock Hard Mode!");
+		}
 	}
 }
